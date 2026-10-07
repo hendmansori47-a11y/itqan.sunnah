@@ -291,11 +291,23 @@
                     <div class="hint">عند اختيار المستوى تظهر فقط المتون التابعة له. ويمكن تسجيل انتقال الطالبة إلى مستوى أو متن جديد.</div>
                 </div>
                 <div class="form-group">
-                    <label for="sessionType">موعد الحلقة:</label>
-                    <select id="sessionType">
-                        <option>حلقة عن بعد (يوم الإثنين)</option>
-                        <option>حلقة حضورية (يوم الخميس)</option>
+                    <label for="sessionDay">يوم الحلقة:</label>
+                    <select id="sessionDay">
+                        <option value="السبت">السبت</option>
+                        <option value="الأحد">الأحد</option>
+                        <option value="الإثنين">الإثنين</option>
+                        <option value="الثلاثاء">الثلاثاء</option>
+                        <option value="الأربعاء">الأربعاء</option>
+                        <option value="الخميس">الخميس</option>
                     </select>
+                </div>
+                <div class="form-group">
+                    <label for="sessionType">نوع الحلقة:</label>
+                    <select id="sessionType">
+                        <option value="حضورية">حضورية</option>
+                        <option value="عن بعد">عن بعد</option>
+                    </select>
+                    <div class="hint">تختار المعلمة يوم الحلقة ونوعها حسب جدول حلقتها.</div>
                 </div>
                 <div class="form-group" style="display:flex;gap:10px;">
                     <div style="flex:1;"><label for="fromPart">من (حديث/صفحة):</label><input type="text" id="fromPart" placeholder="حديث 1"></div>
@@ -557,7 +569,7 @@ function renderStudentPortal(student) {
                 <td>${escapeHTML(r.date)}</td>
                 <td>${escapeHTML(r.level || "غير محدد")}</td>
                 <td>${escapeHTML(r.book || "غير محدد")}</td>
-                <td>${r.session && r.session.includes("الإثنين") ? "عن بعد" : "حضوري"}</td>
+                <td>${escapeHTML(r.session || "غير محدد")}</td>
                 <td>من ${escapeHTML(r.from)} إلى ${escapeHTML(r.to)}</td>
                 <td><strong>${escapeHTML(r.rating)}</strong> / 10</td>
             </tr>
@@ -770,7 +782,7 @@ function openStudentModal(studentId) {
                     <td>${escapeHTML(r.date)}</td>
                     <td>${escapeHTML(r.level || "غير محدد")}</td>
                     <td>${escapeHTML(r.book || "غير محدد")}</td>
-                    <td>${r.session && r.session.includes("الإثنين") ? "عن بعد" : "حضوري"}</td>
+                    <td>${escapeHTML(r.session || "غير محدد")}</td>
                     <td>من ${escapeHTML(r.from)} إلى ${escapeHTML(r.to)}</td>
                     <td><strong>${escapeHTML(r.rating)}</strong> / 10</td>
                 </tr>
@@ -789,7 +801,9 @@ function saveRecitation() {
     const studentId = $("recitationStudentSelect").value;
     const level = $("recitationLevelSelect").value;
     const book = $("recitationBookSelect").value;
-    const session = $("sessionType").value;
+    const sessionDay = $("sessionDay").value;
+    const sessionType = $("sessionType").value;
+    const session = `${sessionType} - ${sessionDay}`;
     const from = $("fromPart").value.trim();
     const to = $("toPart").value.trim();
     const ratingRaw = $("ratingInput").value.trim();
