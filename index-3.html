@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2c5e43">
+    <title>مركز سعد بن معاذ للسنة والمتون</title>
+    <style>
+        :root {
+            --primary-green: #2c5e43;
+            --light-green: #eaf2ed;
+            --accent-gold: #c5a059;
+            --bg-color: #f8f9fa;
+            --text-color: #333333;
+            --danger: #d9534f;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding-bottom: 80px;
+        }
+        button, input, select { font-family: inherit; }
+        button { -webkit-tap-highlight-color: transparent; }
+        header {
+            background-color: var(--primary-green);
+            color: white;
+            padding: 20px 10px;
+            text-align: center;
+            border-bottom: 3px solid var(--accent-gold);
+        }
+        header h3 { margin: 0 0 5px 0; font-size: 13px; color: var(--accent-gold); }
+        header h1 { margin: 0; font-size: 15px; line-height: 1.7; }
+        .container { max-width: 600px; margin: 20px auto; padding: 15px; }
+        .section-content { display: none; }
+        .section-content.active { display: block; }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            border-right: 5px solid var(--accent-gold);
+        }
+        .form-group { margin-bottom: 15px; }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: var(--primary-green);
+        }
+        select, input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            background: #fff;
+        }
+        .btn-save {
+            background-color: var(--primary-green);
+            color: white;
+            border: none;
+            padding: 14px;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .btn-save:active, .btn-action:active, .btn-delete:active { transform: scale(.99); }
+        .btn-action {
+            background-color: var(--accent-gold);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-left: 3px;
+        }
+        .btn-delete {
+            background-color: var(--danger);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            font-size: 13px;
+            vertical-align: middle;
+        }
+        th { background-color: var(--light-green); color: var(--primary-green); }
+        .table-wrap { overflow-x: auto; }
+        #login-screen {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(44, 94, 67, 0.98);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        .login-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        #studentModal {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+            padding: 15px;
+        }
+        .modal-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        nav.bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            border-top: 1px solid #ddd;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
+            z-index: 1000;
+        }
+        .nav-item {
+            text-align: center;
+            color: #666;
+            text-decoration: none;
+            font-size: 12px;
+            cursor: pointer;
+            flex: 1;
+            padding: 2px;
+        }
+        .nav-item.active { color: var(--primary-green); font-weight: bold; }
+        .nav-item span { display: block; font-size: 18px; margin-bottom: 2px; }
+        .report-box {
+            background: #fdfdfd;
+            border: 1px dashed var(--accent-gold);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-family: monospace;
+            white-space: pre-line;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .hint {
+            font-size: 11px;
+            color: #777;
+            margin-top: 6px;
+            line-height: 1.6;
+        }
+        .empty {
+            color: #777;
+            padding: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="login-screen">
+    <div class="login-card">
+        <h3 style="color:var(--primary-green);margin-top:0;font-size:13px;">وزارة الأوقاف والشؤون الإسلامية بنغازي</h3>
+        <h2 style="color:var(--primary-green);margin:5px 0 10px;font-size:16px;">
+            مركز السنة لتحفيظ المتون العلمية والسنة النبوية<br>
+            <span style="color:var(--accent-gold);font-size:14px;">(مركز سعد بن معاذ)</span>
+        </h2>
+        <p style="color:#666;font-size:12px;margin-bottom:15px;">الرجاء إدخال الاسم والكود المخصص لك للمتابعة</p>
+
+        <div class="form-group" style="text-align:right;">
+            <label for="userNameInput">الاسم الكريم:</label>
+            <input type="text" id="userNameInput" placeholder="اكتب اسمك هنا..." autocomplete="name">
+        </div>
+
+        <div class="form-group" style="text-align:right;">
+            <label for="userCodeInput">كود الدخول السري:</label>
+            <input type="text" id="userCodeInput" placeholder="أدخل الكود الخاص بك..." autocomplete="off">
+        </div>
+
+        <button type="button" class="btn-save" id="loginButton">تسجيل الدخول</button>
+        <div id="loginError" style="display:none;color:#b52b27;font-size:13px;margin-top:12px;font-weight:bold;"></div>
+    </div>
+</div>
+
+<div id="studentModal">
+    <div class="modal-card">
+        <h3 id="modalStudentName" style="color:var(--primary-green);margin-top:0;border-bottom:2px solid var(--accent-gold);padding-bottom:8px;">سجل الطالبة</h3>
+        <p><strong>كود الطالبة:</strong> <span id="modalStudentCodeText" style="color:var(--primary-green);font-weight:bold;"></span></p>
+        <p><strong>المقرر:</strong> <span id="modalStudentBook"></span></p>
+        <p><strong>متوسط التقييم العام:</strong> <span id="modalStudentAverage" style="color:var(--accent-gold);font-weight:bold;font-size:18px;">-</span></p>
+        <h4 style="color:var(--primary-green);margin-top:15px;">📅 سجل التسميع اليومي:</h4>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>التاريخ</th><th>المستوى</th><th>المتن</th><th>النوع</th><th>من - إلى</th><th>الدرجة</th></tr></thead>
+                <tbody id="modalHistoryBody"></tbody>
+            </table>
+        </div>
+        <button type="button" class="btn-save" id="closeModalButton" style="background:#666;margin-top:20px;">إغلاق السجل</button>
+    </div>
+</div>
+
+<div id="student-portal" style="display:none;" class="container">
+    <div class="card">
+        <h2 style="color:var(--primary-green);margin-top:0;">🌟 أهلاً بك يا طالبة العلم: <span id="portalStudentName"></span></h2>
+        <p><strong>حلقتك:</strong> <span id="portalStudentCircle"></span></p>
+        <p><strong>المتن المقرّر:</strong> <span id="portalStudentBook"></span></p>
+        <p><strong>كود الدخول الخاص بك:</strong> <span id="portalStudentCode" style="color:var(--accent-gold);font-weight:bold;"></span></p>
+        <p><strong>متوسط التقييم:</strong> <span id="portalStudentAvg" style="color:var(--primary-green);font-weight:bold;font-size:18px;">-</span></p>
+    </div>
+
+    <div class="card">
+        <h3 style="color:var(--primary-green);margin-top:0;">📋 تقرير تسميعك التاريخي</h3>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>التاريخ</th><th>المستوى</th><th>المتن</th><th>النوع</th><th>من - إلى</th><th>التقييم</th></tr></thead>
+                <tbody id="portalHistoryBody"></tbody>
+            </table>
+        </div>
+    </div>
+    <button type="button" class="btn-save" id="studentLogoutButton" style="background:#d9534f;">تسجيل الخروج</button>
+</div>
+
+<div id="main-system-ui" style="display:none;">
+    <header>
+        <h3>وزارة الأوقاف والشؤون الإسلامية بنغازي</h3>
+        <h1>مركز السنة لتحفيظ المتون العلمية والسنة النبوية (مركز سعد بن معاذ)</h1>
+    </header>
+
+    <div class="container">
+        <div id="section-home" class="section-content active">
+            <div class="card">
+                <h3 id="welcomeMsg" style="margin:0 0 5px;color:var(--primary-green);">أهلاً بك 🌷</h3>
+                <p id="roleInfoMsg" style="margin:0;color:#666;font-size:14px;"></p>
+            </div>
+            <div class="card" style="text-align:center;">
+                <h3 style="color:var(--primary-green);margin-top:0;">إحصائيات الحلقة</h3>
+                <p>عدد الطالبات المسجلات: <strong id="totalStudentsCount" style="color:var(--accent-gold);font-size:20px;">0</strong></p>
+            </div>
+        </div>
+
+        <div id="section-recitation" class="section-content">
+            <div class="card">
+                <h3 style="margin-top:0;color:var(--primary-green);">🎙 تسجيل تسميع السنة والمتون</h3>
+                <div class="form-group">
+                    <label for="recitationStudentSelect">اختر الطالبة:</label>
+                    <select id="recitationStudentSelect"></select>
+                </div>
+                <div class="form-group">
+                    <label for="recitationLevelSelect">المستوى:</label>
+                    <select id="recitationLevelSelect"></select>
+                </div>
+                <div class="form-group">
+                    <label for="recitationBookSelect">المتن:</label>
+                    <select id="recitationBookSelect"></select>
+                    <div class="hint">عند اختيار المستوى تظهر فقط المتون التابعة له. ويمكن تسجيل انتقال الطالبة إلى مستوى أو متن جديد.</div>
+                </div>
+                <div class="form-group">
+                    <label for="sessionDay">يوم الحلقة:</label>
+                    <select id="sessionDay">
+                        <option value="السبت">السبت</option>
+                        <option value="الأحد">الأحد</option>
+                        <option value="الإثنين">الإثنين</option>
+                        <option value="الثلاثاء">الثلاثاء</option>
+                        <option value="الأربعاء">الأربعاء</option>
+                        <option value="الخميس">الخميس</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="sessionType">نوع الحلقة:</label>
+                    <select id="sessionType">
+                        <option value="حضورية">حضورية</option>
+                        <option value="عن بعد">عن بعد</option>
+                    </select>
+                    <div class="hint">تختار المعلمة يوم الحلقة ونوعها حسب جدول حلقتها.</div>
+                </div>
+                <div class="form-group" style="display:flex;gap:10px;">
+                    <div style="flex:1;"><label for="fromPart">من (حديث/صفحة):</label><input type="text" id="fromPart" placeholder="حديث 1"></div>
+                    <div style="flex:1;"><label for="toPart">إلى:</label><input type="text" id="toPart" placeholder="حديث 5"></div>
+                </div>
+                <div class="form-group">
+                    <label for="recitationDate">تاريخ التسميع:</label>
+                    <input type="date" id="recitationDate">
+                    <div class="hint">يُحدد تاريخ اليوم تلقائيًا، ويمكن للمعلمة تغييره إذا كان التسميع في تاريخ سابق.</div>
+                </div>
+                <div class="form-group">
+                    <label for="ratingInput">التقييم (من 1 إلى 10):</label>
+                    <input type="number" id="ratingInput" min="1" max="10" step="1" placeholder="أدخل الدرجة (مثال: 9)">
+                </div>
+                <button type="button" class="btn-save" id="saveRecitationButton">حفظ التسميع</button>
+            </div>
+        </div>
+
+        <div id="section-students" class="section-content">
+            <div class="card">
+                <h3 style="margin-top:0;color:var(--primary-green);">➕ إضافة طالبة جديدة لحلقتك</h3>
+                <div class="form-group">
+                    <label for="newStudentName">اسم الطالبة الثلاثي:</label>
+                    <input type="text" id="newStudentName" placeholder="أدخل اسم الطالبة...">
+                </div>
+                <div class="form-group">
+                    <label for="newStudentLevel">مستوى الطالبة:</label>
+                    <select id="newStudentLevel"></select>
+                </div>
+                <div class="form-group">
+                    <label for="newStudentBook">المتن المقرّر:</label>
+                    <select id="newStudentBook"></select>
+                </div>
+                <button type="button" class="btn-save" id="addStudentButton">حفظ الطالبة وتوليد الكود</button>
+            </div>
+
+            <div class="card">
+                <h3 style="margin-top:0;color:var(--primary-green);">📋 طالبات حلقتك وأكوادهن الخاصة</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>الطالبة والكود</th><th>الإجراءات</th></tr></thead>
+                        <tbody id="studentsTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="section-reports" class="section-content">
+            <div class="card">
+                <h3 style="margin-top:0;color:var(--primary-green);">📊 التقارير الأسبوعية والشهرية</h3>
+                <button type="button" class="btn-save" id="weeklyReportButton" style="background:#3b7a57;">📄 تجهيز التقرير الأسبوعي</button>
+                <button type="button" class="btn-save" id="monthlyReportButton" style="background:var(--accent-gold);margin-top:10px;">📈 تجهيز التقرير الشهري الشامل</button>
+
+                <div id="reportOutputContainer" style="display:none;">
+                    <h4 id="reportTitle" style="color:var(--primary-green);margin-top:20px;border-bottom:2px solid var(--accent-gold);padding-bottom:5px;"></h4>
+                    <div class="report-box" id="reportContent"></div>
+                    <button type="button" class="btn-save" id="copyReportButton" style="background:#2e7d32;margin-top:15px;">📋 نسخ التقرير</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item active" data-tab="home"><span>🏠</span>الرئيسية</a>
+        <a href="#" class="nav-item" data-tab="recitation"><span>🎙</span>التسميع</a>
+        <a href="#" class="nav-item" data-tab="students"><span>👥</span>الطالبات</a>
+        <a href="#" class="nav-item" data-tab="reports"><span>📊</span>التقارير</a>
+    </nav>
+</div>
+
+<script>
+"use strict";
+
+const STORAGE_STUDENTS = "itqan_students";
+const STORAGE_RECITATIONS = "itqan_recitations";
+const MAX_CIRCLES = 14;
+
+const ITQAN_LEVELS = {
+    "المستوى الأول": [
+        "الأصول الثلاثة وأدلتها",
+        "تحفة الأطفال والغلمان",
+        "الأرجوزة الميئية",
+        "الأربعون في مباني الإسلام"
+    ],
+    "المستوى الثاني": [
+        "نظم الآجرومية",
+        "المنظومة البيقونية",
+        "منظومة أبي إسحاق الإلبيري",
+        "مختصر الآداب والأذكار"
+    ],
+    "المستوى الثالث": [
+        "العقيدة الواسطية",
+        "كتاب التوحيد",
+        "المقدمة الآجرومية",
+        "تسهيل الطرقات في نظم الورقات"
+    ],
+    "المستوى الرابع": [
+        "عمدة الأحكام"
+    ],
+    "الإضافي": [
+        "الشاطبية في القراءات"
+    ]
+};
+
+let currentUser = "";
+let currentRole = "";
+let currentStudent = null;
+
+function loadArray(key) {
+    try {
+        const value = JSON.parse(localStorage.getItem(key));
+        return Array.isArray(value) ? value : [];
+    } catch (error) {
+        console.error("خطأ في قراءة البيانات:", key, error);
+        return [];
+    }
+}
+
+let students = loadArray(STORAGE_STUDENTS);
+let recitations = loadArray(STORAGE_RECITATIONS);
+
+function saveData() {
+    localStorage.setItem(STORAGE_STUDENTS, JSON.stringify(students));
+    localStorage.setItem(STORAGE_RECITATIONS, JSON.stringify(recitations));
+}
+
+function $(id) {
+    return document.getElementById(id);
+}
+
+function escapeHTML(value) {
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+function showLoginError(message) {
+    const box = $("loginError");
+    box.textContent = message;
+    box.style.display = "block";
+}
+
+function clearLoginError() {
+    const box = $("loginError");
+    box.textContent = "";
+    box.style.display = "none";
+}
+
+function getCircleNumber(code) {
+    const match = /^t(\d+)$/.exec(code);
+    if (!match) return null;
+    const number = Number(match[1]);
+    return Number.isInteger(number) && number >= 1 && number <= MAX_CIRCLES ? number : null;
+}
+
+function getStudentsForCurrentUser() {
+    if (currentRole === "الإدارة العامة") return students;
+    return students.filter(s => s.role === currentRole);
+}
+
+function getRecitationsForCurrentUser() {
+    if (currentRole === "الإدارة العامة") return recitations;
+    return recitations.filter(r => r.role === currentRole);
+}
+
+function loginAsTeacher(name, code) {
+    const circleNumber = getCircleNumber(code);
+
+    if (code === "admin123") {
+        currentRole = "الإدارة العامة";
+    } else if (circleNumber !== null) {
+        currentRole = `الحلقة (${circleNumber})`;
+    } else {
+        return false;
+    }
+
+    currentUser = name;
+    currentStudent = null;
+
+    $("login-screen").style.display = "none";
+    $("student-portal").style.display = "none";
+    $("main-system-ui").style.display = "block";
+
+    $("welcomeMsg").textContent = `أهلاً بك يا أستاذة ${name} 🌷`;
+    $("roleInfoMsg").textContent = `الصلاحية: ${currentRole} - مركز سعد بن معاذ`;
+
+    renderStudents();
+    switchTab("home");
+    return true;
+}
+
+function loginAsStudent(student) {
+    currentStudent = student;
+    currentUser = student.name;
+    currentRole = student.role;
+
+    $("login-screen").style.display = "none";
+    $("main-system-ui").style.display = "none";
+    $("student-portal").style.display = "block";
+
+    renderStudentPortal(student);
+}
+
+function executeLogin() {
+    clearLoginError();
+
+    const name = $("userNameInput").value.trim();
+    const code = $("userCodeInput").value.trim().toLowerCase();
+
+    if (!name || !code) {
+        showLoginError("الرجاء إدخال الاسم الكريم وكود الدخول السري.");
+        return;
+    }
+
+    if (loginAsTeacher(name, code)) return;
+
+    const targetStudent = students.find(s => String(s.studentCode).toLowerCase() === code);
+    if (targetStudent) {
+        loginAsStudent(targetStudent);
+        return;
+    }
+
+    showLoginError("كود الدخول غير صحيح. استخدمي t1 إلى t14 للمعلمات أو كود الطالبة الخاص بها.");
+}
+
+function renderStudentPortal(student) {
+    $("portalStudentName").textContent = student.name;
+    $("portalStudentCircle").textContent = student.role || "غير محددة";
+    $("portalStudentLevel").textContent = student.level || "غير محدد";
+    $("portalStudentBook").textContent = student.book || "-";
+    $("portalStudentCode").textContent = student.studentCode || "-";
+
+    const studentRecs = recitations.filter(r =>
+        (r.studentId && String(r.studentId) === String(student.id)) ||
+        (!r.studentId && r.student === student.name)
+    );
+
+    let avgText = "لم تبدأ التسميع بعد";
+    if (studentRecs.length) {
+        const sum = studentRecs.reduce((total, r) => total + Number(r.rating || 0), 0);
+        avgText = `${(sum / studentRecs.length).toFixed(1)} / 10`;
+    }
+    $("portalStudentAvg").textContent = avgText;
+
+    const body = $("portalHistoryBody");
+    body.innerHTML = "";
+
+    if (!studentRecs.length) {
+        body.innerHTML = '<tr><td colspan="6" class="empty">لا توجد سجلات تسميع مسجلة حتى الآن</td></tr>';
+        return;
+    }
+
+    studentRecs.slice().sort((a, b) => (b.timestamp || b.createdAt || 0) - (a.timestamp || a.createdAt || 0)).forEach(r => {
+        body.insertAdjacentHTML("beforeend", `
+            <tr>
+                <td>${escapeHTML(r.date)}</td>
+                <td>${escapeHTML(r.level || "غير محدد")}</td>
+                <td>${escapeHTML(r.book || "غير محدد")}</td>
+                <td>${escapeHTML(r.session || "غير محدد")}</td>
+                <td>من ${escapeHTML(r.from)} إلى ${escapeHTML(r.to)}</td>
+                <td><strong>${escapeHTML(r.rating)}</strong> / 10</td>
+            </tr>
+        `);
+    });
+}
+
+function switchTab(tabId, element = null) {
+    document.querySelectorAll(".section-content").forEach(sec => sec.classList.remove("active"));
+    const target = $(`section-${tabId}`);
+    if (target) target.classList.add("active");
+
+    document.querySelectorAll(".nav-item").forEach(item => item.classList.remove("active"));
+    if (element) element.classList.add("active");
+    else {
+        const defaultNav = document.querySelector(`.nav-item[data-tab="${tabId}"]`);
+        if (defaultNav) defaultNav.classList.add("active");
+    }
+
+    if (tabId === "students" || tabId === "recitation" || tabId === "home") {
+        renderStudents();
+    }
+}
+
+function populateLevelSelect(selectId, selectedLevel = "") {
+    const select = $(selectId);
+    if (!select) return;
+
+    select.innerHTML = '<option value="">اختر المستوى</option>';
+    Object.keys(ITQAN_LEVELS).forEach(level => {
+        select.insertAdjacentHTML("beforeend",
+            `<option value="${escapeHTML(level)}">${escapeHTML(level)}</option>`);
+    });
+
+    if (selectedLevel && ITQAN_LEVELS[selectedLevel]) {
+        select.value = selectedLevel;
+    }
+}
+
+function populateBookSelect(selectId, level, selectedBook = "") {
+    const select = $(selectId);
+    if (!select) return;
+
+    select.innerHTML = '<option value="">اختر المتن</option>';
+    const books = ITQAN_LEVELS[level] || [];
+
+    books.forEach(book => {
+        select.insertAdjacentHTML("beforeend",
+            `<option value="${escapeHTML(book)}">${escapeHTML(book)}</option>`);
+    });
+
+    if (selectedBook && books.includes(selectedBook)) {
+        select.value = selectedBook;
+    }
+}
+
+function initializeLevelBookSelectors() {
+    populateLevelSelect("newStudentLevel");
+    populateLevelSelect("recitationLevelSelect");
+
+    $("newStudentLevel").addEventListener("change", () => {
+        populateBookSelect("newStudentBook", $("newStudentLevel").value);
+    });
+
+    $("recitationLevelSelect").addEventListener("change", () => {
+        populateBookSelect("recitationBookSelect", $("recitationLevelSelect").value);
+    });
+
+    $("recitationStudentSelect").addEventListener("change", () => {
+        const student = students.find(s => String(s.id) === String($("recitationStudentSelect").value));
+        if (!student) return;
+
+        populateLevelSelect("recitationLevelSelect", student.level || "");
+        populateBookSelect("recitationBookSelect", student.level || "", student.book || "");
+    });
+}
+
+function generateStudentCode() {
+    let code;
+    do {
+        code = "s" + Math.floor(1000 + Math.random() * 9000);
+    } while (students.some(s => s.studentCode === code));
+    return code;
+}
+
+function addStudent() {
+    const name = $("newStudentName").value.trim();
+    const level = $("newStudentLevel").value;
+    const book = $("newStudentBook").value;
+
+    if (!name || !level || !book) {
+        alert("الرجاء إدخال اسم الطالبة واختيار المستوى والمتن المقرر.");
+        return;
+    }
+
+    if (currentRole === "الإدارة العامة") {
+        alert("الإدارة العامة لا تضيف الطالبات إلى حلقة محددة. سجّلي الدخول بكود الحلقة لإضافة طالباتها.");
+        return;
+    }
+
+    const studentCode = generateStudentCode();
+
+    students.push({
+        id: Date.now(),
+        addedBy: currentUser,
+        role: currentRole,
+        name,
+        level,
+        book,
+        studentCode
+    });
+
+    saveData();
+    $("newStudentName").value = "";
+    renderStudents();
+
+    alert(`تمت إضافة الطالبة بنجاح!\nالمستوى: ${level}\nالمتن: ${book}\nكود دخولها الخاص هو: ${studentCode}`);
+}
+
+function deleteStudent(id) {
+    const student = students.find(s => String(s.id) === String(id));
+    if (!student) return;
+
+    if (currentRole !== "الإدارة العامة" && student.role !== currentRole) {
+        alert("لا تملكين صلاحية حذف هذه الطالبة.");
+        return;
+    }
+
+    if (!confirm(`هل أنتِ متأكدة من حذف الطالبة: ${student.name}؟\\nسيبقى سجل التسميع محفوظًا.`)) return;
+
+    students = students.filter(s => String(s.id) !== String(id));
+    saveData();
+    renderStudents();
+}
+
+function renderStudents() {
+    const tbody = $("studentsTableBody");
+    const select = $("recitationStudentSelect");
+    const myStudents = getStudentsForCurrentUser();
+
+    tbody.innerHTML = "";
+    select.innerHTML = "";
+
+    $("totalStudentsCount").textContent = myStudents.length;
+
+    if (!myStudents.length) {
+        tbody.innerHTML = '<tr><td colspan="2" class="empty">لا توجد طالبات مسجلات في هذه الحلقة حتى الآن</td></tr>';
+        select.innerHTML = '<option value="">لا توجد طالبات</option>';
+        return;
+    }
+
+    myStudents.forEach(student => {
+        tbody.insertAdjacentHTML("beforeend", `
+            <tr>
+                <td style="text-align:right;">
+                    <strong>${escapeHTML(student.name)}</strong><br>
+                    <small style="color:#666;">المتن: ${escapeHTML(student.book)}</small><br>
+                    <small style="color:var(--primary-green);font-weight:bold;">كود الطالبة: ${escapeHTML(student.studentCode)}</small>
+                </td>
+                <td>
+                    <button type="button" class="btn-action view-student" data-id="${escapeHTML(student.id)}">السجل</button>
+                    <button type="button" class="btn-delete delete-student" data-id="${escapeHTML(student.id)}">حذف</button>
+                </td>
+            </tr>
+        `);
+
+        select.insertAdjacentHTML("beforeend",
+            `<option value="${escapeHTML(student.id)}">${escapeHTML(student.name)} (${escapeHTML(student.book)})</option>`
+        );
+    });
+
+    const firstStudent = myStudents[0];
+    if (firstStudent) {
+        select.value = String(firstStudent.id);
+        populateLevelSelect("recitationLevelSelect", firstStudent.level || "");
+        populateBookSelect("recitationBookSelect", firstStudent.level || "", firstStudent.book || "");
+    }
+
+}
+
+function openStudentModal(studentId) {
+    const student = students.find(s => String(s.id) === String(studentId));
+    if (!student) return;
+
+    $("modalStudentName").textContent = `سجل الطالبة: ${student.name}`;
+    $("modalStudentCodeText").textContent = student.studentCode;
+    $("modalStudentBook").textContent = `${student.level || "غير محدد"} — ${student.book || "غير محدد"}`;
+
+    const studentRecs = recitations.filter(r =>
+        (r.studentId && String(r.studentId) === String(student.id)) ||
+        (!r.studentId && r.student === student.name)
+    );
+
+    let avgText = "لم تبدأ التسميع بعد";
+    if (studentRecs.length) {
+        const sum = studentRecs.reduce((total, r) => total + Number(r.rating || 0), 0);
+        avgText = `${(sum / studentRecs.length).toFixed(1)} / 10`;
+    }
+    $("modalStudentAverage").textContent = avgText;
+
+    const body = $("modalHistoryBody");
+    body.innerHTML = "";
+
+    if (!studentRecs.length) {
+        body.innerHTML = '<tr><td colspan="6" class="empty">لا توجد سجلات تسميع حتى الآن</td></tr>';
+    } else {
+        studentRecs.slice().sort((a, b) => (b.timestamp || b.createdAt || 0) - (a.timestamp || a.createdAt || 0)).forEach(r => {
+            body.insertAdjacentHTML("beforeend", `
+                <tr>
+                    <td>${escapeHTML(r.date)}</td>
+                    <td>${escapeHTML(r.level || "غير محدد")}</td>
+                    <td>${escapeHTML(r.book || "غير محدد")}</td>
+                    <td>${escapeHTML(r.session || "غير محدد")}</td>
+                    <td>من ${escapeHTML(r.from)} إلى ${escapeHTML(r.to)}</td>
+                    <td><strong>${escapeHTML(r.rating)}</strong> / 10</td>
+                </tr>
+            `);
+        });
+    }
+
+    $("studentModal").style.display = "flex";
+}
+
+function closeModal() {
+    $("studentModal").style.display = "none";
+}
+
+function saveRecitation() {
+    const studentId = $("recitationStudentSelect").value;
+    const level = $("recitationLevelSelect").value;
+    const book = $("recitationBookSelect").value;
+    const sessionDay = $("sessionDay").value;
+    const sessionType = $("sessionType").value;
+    const session = `${sessionType} - ${sessionDay}`;
+    const from = $("fromPart").value.trim();
+    const to = $("toPart").value.trim();
+    const ratingRaw = $("ratingInput").value.trim();
+    const rating = Number(ratingRaw);
+    const selectedDate = $("recitationDate").value;
+
+    if (!studentId || !level || !book || !from || !to || !ratingRaw || !selectedDate) {
+        alert("الرجاء إكمال الطالبة والمستوى والمتن والتاريخ ومقدار التسميع والتقييم.");
+        return;
+    }
+
+    if (!ITQAN_LEVELS[level] || !ITQAN_LEVELS[level].includes(book)) {
+        alert("المتن المختار لا يتبع المستوى المحدد. الرجاء اختيار المستوى ثم المتن.");
+        return;
+    }
+
+    if (!Number.isInteger(rating) || rating < 1 || rating > 10) {
+        alert("التقييم يجب أن يكون رقمًا صحيحًا بين 1 و10.");
+        return;
+    }
+
+    const student = students.find(s => String(s.id) === String(studentId));
+    if (!student) {
+        alert("تعذر العثور على الطالبة.");
+        return;
+    }
+
+    if (currentRole !== "الإدارة العامة" && student.role !== currentRole) {
+        alert("لا تملكين صلاحية تسجيل تسميع لهذه الطالبة.");
+        return;
+    }
+
+    const selectedDateObject = new Date(selectedDate + "T12:00:00");
+
+    recitations.push({
+        id: Date.now(),
+        teacher: currentUser,
+        role: currentRole,
+        studentId: student.id,
+        student: student.name,
+        level,
+        book,
+        session,
+        from,
+        to,
+        rating,
+        date: formatDateArabic(selectedDate),
+        dateISO: selectedDate,
+        timestamp: selectedDateObject.getTime(),
+        createdAt: Date.now()
+    });
+
+    // عند اختيار مستوى/متن جديد، يصبح هو الحالي للطالبة.
+    student.level = level;
+    student.book = book;
+
+    saveData();
+
+    alert(`تم حفظ التسميع بنجاح!\nالطالبة: ${student.name}\nالمستوى: ${level}\nالمتن: ${book}\nالتاريخ: ${formatDateArabic(selectedDate)}`);
+
+    $("fromPart").value = "";
+    $("toPart").value = "";
+    $("ratingInput").value = "";
+
+    renderStudents();
+    setTodayDate();
+}
+
+function getStartOfDay(date) {
+    const d = new Date(date);
+    d.setHours(0, 0, 0, 0);
+    return d;
+}
+
+function getStartOfWeek(date) {
+    const d = getStartOfDay(date);
+    const day = d.getDay();
+    const diff = day === 0 ? 6 : day - 1; // الإثنين بداية الأسبوع
+    d.setDate(d.getDate() - diff);
+    return d;
+}
+
+function getStartOfMonth(date) {
+    const d = getStartOfDay(date);
+    d.setDate(1);
+    return d;
+}
+
+function getFilteredReportData(type) {
+    const now = new Date();
+    const start = type === "weekly" ? getStartOfWeek(now) : getStartOfMonth(now);
+    const end = new Date(now);
+    end.setHours(23, 59, 59, 999);
+
+    const myStuds = getStudentsForCurrentUser();
+    const myStudentIds = new Set(myStuds.map(s => String(s.id)));
+
+    const myRecs = getRecitationsForCurrentUser().filter(r => {
+        if (r.dateISO) {
+            const recordDate = new Date(r.dateISO + "T12:00:00").getTime();
+            return recordDate >= start.getTime() && recordDate <= end.getTime();
+        }
+        if (r.timestamp) {
+            return r.timestamp >= start.getTime() && r.timestamp <= end.getTime();
+        }
+        return true; // السجلات القديمة التي لا تحتوي تاريخًا صريحًا تبقى ظاهرة
+    }).filter(r => {
+        if (r.studentId) return myStudentIds.has(String(r.studentId));
+        return myStuds.some(s => s.name === r.student);
+    });
+
+    return { myStuds, myRecs, start, end };
+}
+
+function generateReport(type) {
+    const container = $("reportOutputContainer");
+    const titleElem = $("reportTitle");
+    const contentElem = $("reportContent");
+
+    const { myStuds, myRecs, start, end } = getFilteredReportData(type);
+
+    container.style.display = "block";
+
+    let reportText = "";
+    reportText += "وزارة الأوقاف والشؤون الإسلامية بنغازي\n";
+    reportText += "مركز السنة لتحفيظ المتون العلمية والسنة النبوية (مركز سعد بن معاذ)\n";
+
+    if (type === "weekly") {
+        titleElem.textContent = "📋 التقرير الأسبوعي";
+        reportText += "📌 التقرير الأسبوعي\n";
+    } else {
+        titleElem.textContent = "📈 التقرير الشهري الشامل";
+        reportText += "📌 التقرير الشهري الشامل\n";
+    }
+
+    reportText += `👩‍🏫 المعلمة: ${currentUser} (${currentRole})\n`;
+    reportText += `📅 الفترة: ${start.toLocaleDateString("ar-LY")} إلى ${end.toLocaleDateString("ar-LY")}\n`;
+    reportText += `👥 عدد طالبات الحلقة: ${myStuds.length}\n`;
+    reportText += `🎙️ عدد جلسات التسميع المسجلة: ${myRecs.length}\n`;
+    reportText += "-----------------------------------\n";
+    reportText += "📝 ملخص التسميع:\n";
+
+    if (!myRecs.length) {
+        reportText += "لا توجد سجلات تسميع خلال هذه الفترة.\n";
+    } else {
+        myRecs.forEach((r, index) => {
+            reportText += `${index + 1}. [${r.date || r.dateISO || "-"}] ${r.student} | ${r.level || "غير محدد"} | ${r.book || "غير محدد"} | من (${r.from}) إلى (${r.to}) | التقييم: ${r.rating}/10\n`;
+        });
+    }
+
+    if (type === "monthly" && myRecs.length) {
+        const avg = myRecs.reduce((sum, r) => sum + Number(r.rating || 0), 0) / myRecs.length;
+        reportText += "-----------------------------------\n";
+        reportText += `⭐ متوسط تقييم التسميع خلال الشهر: ${avg.toFixed(1)} / 10\n`;
+    }
+
+    reportText += "-----------------------------------\n";
+    reportText += "سير العمل في الحلقة منتظم ولله الحمد وفق خطة المركز.\n";
+
+    contentElem.textContent = reportText;
+}
+
+async function copyReport() {
+    const text = $("reportContent").textContent;
+
+    try {
+        if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(text);
+        } else {
+            const area = document.createElement("textarea");
+            area.value = text;
+            area.style.position = "fixed";
+            area.style.opacity = "0";
+            document.body.appendChild(area);
+            area.select();
+            document.execCommand("copy");
+            area.remove();
+        }
+        alert("تم نسخ التقرير بنجاح! يمكنك لصقه وإرساله للإدارة.");
+    } catch (error) {
+        console.error(error);
+        alert("تعذر النسخ تلقائيًا. حددي التقرير وانسخيه يدويًا.");
+    }
+}
+
+function setTodayDate() {
+    const input = $("recitationDate");
+    if (!input) return;
+
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+    input.value = `${year}-${month}-${day}`;
+}
+
+function logout() {
+    currentUser = "";
+    currentRole = "";
+    currentStudent = null;
+
+    $("main-system-ui").style.display = "none";
+    $("student-portal").style.display = "none";
+    $("login-screen").style.display = "flex";
+
+    $("userNameInput").value = "";
+    $("userCodeInput").value = "";
+    clearLoginError();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    $("loginButton").addEventListener("click", executeLogin);
+
+    $("userCodeInput").addEventListener("keydown", event => {
+        if (event.key === "Enter") executeLogin();
+    });
+
+    $("userNameInput").addEventListener("keydown", event => {
+        if (event.key === "Enter") $("userCodeInput").focus();
+    });
+
+    $("closeModalButton").addEventListener("click", closeModal);
+    $("studentLogoutButton").addEventListener("click", logout);
+    const saveRecitationButton = $("saveRecitationButton");
+    if (saveRecitationButton) {
+        saveRecitationButton.addEventListener("click", function(event) {
+            event.preventDefault();
+            try {
+                saveRecitation();
+            } catch (error) {
+                console.error("saveRecitation error:", error);
+                alert("حدث خطأ أثناء حفظ التسميع. يرجى التأكد من إكمال بيانات التسميع ثم المحاولة مرة أخرى.");
+            }
+        });
+    }
+    $("addStudentButton").addEventListener("click", addStudent);
+    $("weeklyReportButton").addEventListener("click", () => generateReport("weekly"));
+    $("monthlyReportButton").addEventListener("click", () => generateReport("monthly"));
+    $("copyReportButton").addEventListener("click", copyReport);
+
+    initializeLevelBookSelectors();
+
+    document.querySelectorAll(".nav-item").forEach(item => {
+        item.addEventListener("click", event => {
+            event.preventDefault();
+            switchTab(item.dataset.tab, item);
+        });
+    });
+
+    $("studentsTableBody").addEventListener("click", event => {
+        const viewButton = event.target.closest(".view-student");
+        const deleteButton = event.target.closest(".delete-student");
+
+        if (viewButton) openStudentModal(viewButton.dataset.id);
+        if (deleteButton) deleteStudent(deleteButton.dataset.id);
+    });
+
+    $("studentModal").addEventListener("click", event => {
+        if (event.target === $("studentModal")) closeModal();
+    });
+
+    document.addEventListener("keydown", event => {
+        if (event.key === "Escape") closeModal();
+    });
+
+    setTodayDate();
+    populateLevelSelect("newStudentLevel");
+    populateLevelSelect("recitationLevelSelect");
+    populateBookSelect("newStudentBook", "");
+    populateBookSelect("recitationBookSelect", "");
+    renderStudents();
+});
+</script>
+</body>
+</html>
